@@ -20,7 +20,7 @@
 	$iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST);
 	foreach ($iterator as $file) {
 		if($file->isFile()) {
-			if($file->getFilename() != "QGen.ver")
+			if(($file->getFilename() != "QGen.ver") && ($file->getFilename() != "index.php"))
 			{
 				$filename = str_replace(".\\", "", $file);
 				$domfile = $qgen->appendChild($dom->createElement('File'));

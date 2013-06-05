@@ -5,7 +5,7 @@ WPQGenUpd
 Установка
 -------------------
 1. Папку qgenupdates скопировать в папку плагинов Wordpress (wp-content/plugins).
-2. Создать папку для обновлений QGen'a, доступную через браузер и скопировать в нее файл QGen.ver.
+2. Папку QGen скопировать в директорию, доступную через браузер.
 3. Прописать mime-type .ver для обработки через PHP:  
     `application/x-httpd-php = .php .php3 .php4 .php5 .phtml .ver`
 4. В файле QGen.ver поправить путь до файла wp-load.php:  
