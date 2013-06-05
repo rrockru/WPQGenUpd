@@ -1,0 +1,35 @@
+<?php
+	require_once('../wp-load.php');
+
+	global $wpdb;
+	$table_name = $wpdb->prefix . "qgenupdates";
+
+	$update = $wpdb->get_row("SELECT * FROM $table_name ORDER BY version DESC LIMIT 1");
+
+	$dom = new DomDocument(); 
+	$qgenupd = $dom->createElement('QGenUpd');
+	$dom->appendChild($qgenupd);
+	$qgen = $qgenupd->appendChild($dom->createElement('QGen'));
+	$qgen->setAttribute('version', $update->version);
+	$qgenupd->appendChild($qgen);	
+	$desc = $qgen->appendChild($dom->createElement('Desc'));
+	$desc->appendChild($dom->createTextNode($update->description));
+	$qgen->appendChild($desc);
+
+	$dir_iterator = new RecursiveDirectoryIterator('.');
+	$iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST);
+	foreach ($iterator as $file) {
+		if($file->isFile()) {
+			if($file->getFilename() != "QGen.ver")
+			{
+				$filename = str_replace(".\\", "", $file);
+				$domfile = $qgen->appendChild($dom->createElement('File'));
+				$domfile->setAttribute('sum', md5_file($file));
+				$domfile->setAttribute('name', $filename);
+				$domfile->setAttribute('size', $file->getFileInfo()->getSize());
+				$qgen->appendChild($domfile);
+			}
+		}
+	}
+	echo $dom->saveXML();
+?>
